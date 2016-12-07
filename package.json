@@ -1,0 +1,31 @@
+{
+  "name": "logger",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snaptech/logger.git"
+  },
+  "author": "SNAPTECH",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/snaptech/logger/issues"
+  },
+  "homepage": "https://github.com/snaptech/logger#readme",
+  "dependencies": {
+    "winston": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.11.1",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.8.0"
+  }
+}
