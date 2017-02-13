@@ -41,5 +41,5 @@ module.exports = {
   debug: (...args) => safeLog('debug', ...args),
   info: (...args) => safeLog('info', ...args),
   warn: (...args) => safeLog('warn', ...args),
-  error: (...args) => safeLog('error', ...args)
+  error: (...args) => safeLog('error', (args[0]).message, ...args)
 };
