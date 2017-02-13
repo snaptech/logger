@@ -41,5 +41,9 @@ module.exports = {
   debug: (...args) => safeLog('debug', ...args),
   info: (...args) => safeLog('info', ...args),
   warn: (...args) => safeLog('warn', ...args),
-  error: (...args) => safeLog('error', (args[0]).message, ...args)
+  error: (...args) => {
+    if( args[0] instanceof Object && (args[0]).message )
+      safeLog('error', (args[0]).message, ...(args.slice(1)));
+    else safeLog('error', ...args);
+  }
 };
