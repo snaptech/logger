@@ -43,7 +43,7 @@ module.exports = {
   warn: (...args) => safeLog('warn', ...args),
   error: (...args) => {
     if( args[0] instanceof Object && (args[0]).message )
-      safeLog('error', (args[0]).message + ((args[0]).stack?'\n' + (args[0]).stack:''), ...args);
+      safeLog('error', (args[0]).message + ((args[0]).stack?'\n' + (args[0]).stack:''));
     else safeLog('error', ...args);
   }
 };
