@@ -44,6 +44,8 @@ module.exports = {
   error: (...args) => {
     if( args[0] instanceof Object && (args[0]).message )
       safeLog('error', (args[0]).message + ((args[0]).stack?'\n' + (args[0]).stack:''));
+    if( args[0] instanceof String )
+      safeLog('error', args[0]);
     else safeLog('error', ...args);
   }
 };
