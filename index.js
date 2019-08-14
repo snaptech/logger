@@ -18,9 +18,9 @@ const logger = new winston.createLogger({
       handleExceptions: true,
       humanReadableUnhandledException: true,
       format: winston.format.combine(
-        timestamp(),
-        prettyPrint(10, true),
-        errors({stack: true})
+        winston.format.timestamp(),
+        winston.format.prettyPrint(10, true),
+        winston.format.errors({stack: true})
       ),
       json: false,
       colorize: true,
