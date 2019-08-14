@@ -1,8 +1,8 @@
 {
   "name": "@snaptech/logger",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "private": false,
-  "description": "",
+  "description": "Wraps the Winston library with custom handling and abstraction to allow easy uniform upgrades or swapping out the logging library",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ."

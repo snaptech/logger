@@ -94,6 +94,7 @@ const logger = {
   silly: (...args) => safeLog('silly', ...args),
   trace: (...args) => safeLog('debug', ...args),
   debug: (...args) => safeLog('debug', ...args),
+  log: (...args) => safeLog('info', ...args),
   info: (...args) => safeLog('info', ...args),
   warn: (...args) => safeLog('warn', ...args),
   error: (...args) => safeLog('error', ...args)
