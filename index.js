@@ -1,9 +1,9 @@
 const winston = require('winston');
 
-const logger = new winston.Logger({
+const logger = new winston.createLogger({
+  level: 'silly',
   transports: [
     new winston.transports.File({
-      level: 'debug',
       filename: './logs/system.log',
       handleExceptions: true,
       humanReadableUnhandledException: true,
@@ -14,7 +14,7 @@ const logger = new winston.Logger({
       timestamp: true
     }),
     new winston.transports.Console({
-      level: 'info',
+      level: 'debug',
       handleExceptions: true,
       humanReadableUnhandledException: true,
       json: false,
