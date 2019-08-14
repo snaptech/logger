@@ -55,7 +55,12 @@ const safeLog = (method, ...args) => {
   try {
     let message = '';
     let jsonMessage = '';
+    let exit = false;
     (args || []).forEach((v) => {
+      if (v.toString().indexOf('GET /healthy ') >= 0
+          || v.toString().indexOf('GET /ready ') >= 0) {
+        exit = true;
+      }
       jsonMessage += `${jsonMessage.length > 0 ? ',' : ''}`;
       message += `${message.length > 0 ? '\n' : ''}`;
       if ((v instanceof String || typeof (v) === "string")) {
@@ -78,6 +83,8 @@ const safeLog = (method, ...args) => {
         jsonMessage += JSON.stringify(v);
       }
     });
+
+    if (method === 'debug' && exit) { return null; }
 
     loggerFile.log(method, `{logEntry:[${jsonMessage}]}`); //untouched
     return loggerConsole.log(method, message); //prettified
