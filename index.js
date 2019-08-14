@@ -20,7 +20,8 @@ const logger = new winston.createLogger({
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.prettyPrint(10, true),
-        winston.format.errors({stack: true})
+        winston.format.errors({stack: true}),
+        winston.format.simple()
       )
     })
   ],
