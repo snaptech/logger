@@ -87,8 +87,8 @@ const safeLog = (method, ...args) => {
 
     if (method === 'debug' && exit) { return null; }
 
-    loggerFile.log(method, `{logEntry:[${jsonMessage}]}`); //untouched
-    return loggerConsole.log(method, message); //prettified
+    loggerFile.log(method === 'json' ? 'info' : method, `{logEntry:[${jsonMessage}]}`); //untouched
+    return loggerConsole.log(method === 'json' ? 'info' : method, message); //prettified
   } catch (err) {
     console.error(err);
     console.error(...args);
@@ -127,3 +127,4 @@ module.default = logger;
 // module.exports.debug("test debug");
 // module.exports.info("test info");
 // module.exports.warn("test warn");
+// module.exports.json({example : {deep:{obj:"v"}}});
