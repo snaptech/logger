@@ -56,6 +56,7 @@ const safeLog = (method, ...args) => {
     let message = '';
     let jsonMessage = '';
     let exit = false;
+
     (args || []).forEach((v) => {
       if (v.toString().indexOf('GET: /healthy') >= 0
           || v.toString().indexOf('GET: /ready') >= 0) {
@@ -65,9 +66,9 @@ const safeLog = (method, ...args) => {
       message += `${message.length > 0 ? '\n' : ''}`;
       if ((v instanceof String || typeof (v) === "string")) {
         message += `"${v}"`;
-        jsonMessage += JSON.stringify(v);
-      }
-      else if (v instanceof Error) {
+        jsonMessage += JSON.stringify(v, null, method === 'json' ? 2 : undefined);
+
+      } else if (v instanceof Error) {
         message += `${v.name}`;
         if (v.code) {
           message += `(${v.code})`;
@@ -77,10 +78,10 @@ const safeLog = (method, ...args) => {
         // Error's aren't parsable without custom handling
         const alt = {};
         Object.getOwnPropertyNames(v).forEach(function (key) { alt[key] = this[key]; }, v);
-        jsonMessage += JSON.stringify(alt);
+        jsonMessage += JSON.stringify(alt, null, method === 'json' ? 2 : undefined);
       } else {
-        message += JSON.stringify(v);
-        jsonMessage += JSON.stringify(v);
+        message += JSON.stringify(v, null, method === 'json' ? 2 : null);
+        jsonMessage += JSON.stringify(v, null, method === 'json' ? 2 : null);
       }
     });
 
@@ -104,7 +105,8 @@ const logger = {
   log: (...args) => safeLog('info', ...args),
   info: (...args) => safeLog('info', ...args),
   warn: (...args) => safeLog('warn', ...args),
-  error: (...args) => safeLog('error', ...args)
+  error: (...args) => safeLog('error', ...args),
+  json: (...args) => safeLog('json', ...args)
 };
 
 module.exports = {
