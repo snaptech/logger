@@ -1,35 +1,24 @@
 const winston = require('winston');
+const customConsoleFormatter = require('./custom-console-formatter');
+const customJSONFormatter = require('./custom-json-formatter');
 
-const logger = new winston.createLogger({
-  level: 'silly',
+
+const loggerConsole = new winston.createLogger({
+  level: 'debug',
   transports: [
-    new winston.transports.File({
-      filename: './logs/system.log',
-      handleExceptions: true,
-      humanReadableUnhandledException: true,
-      format: winston.format.json(),
-      maxsize: 5242880, //5MB
-      maxFiles: 5,
-      colorize: false,
-      timestamp: true
-    }),
     new winston.transports.Console({
       level: 'debug',
       handleExceptions: true,
-      humanReadableUnhandledException: true,
       format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.prettyPrint(10, true),
-        winston.format.errors({stack: true}),
-        winston.format.simple()
+         winston.format.colorize(),
+         winston.format.timestamp(),
+         winston.format.errors({stack: true}),
+         customConsoleFormatter()
+         //winston.format.prettyPrint({depth: 10, colorize: true}),
       )
     })
   ],
   exceptionHandlers: [
-    new winston.transports.File({
-      filename: './logs/unhandled.log',
-      format: winston.format.json()
-    }),
     new winston.transports.Console({
       format: winston.format.json()
     })
@@ -37,9 +26,61 @@ const logger = new winston.createLogger({
   exitOnError: false
 });
 
+const loggerFile = new winston.createLogger({
+  level: 'silly',
+  transports: [
+    new winston.transports.File({
+      filename: './logs/system.log',
+      handleExceptions: true,
+      humanReadableUnhandledException: true,
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        customJSONFormatter()
+      ),
+      maxsize: 5242880, //5MB
+      maxFiles: 5
+    })
+  ],
+  exceptionHandlers: [
+    new winston.transports.File({
+      filename: './logs/unhandled.log',
+      format: winston.format.json()
+    })
+  ],
+  exitOnError: false
+});
+
+
 const safeLog = (method, ...args) => {
   try {
-    return logger[method](...args);
+    let message = '';
+    let jsonMessage = '';
+    (args || []).forEach((v) => {
+      jsonMessage += `${jsonMessage.length > 0 ? ',' : ''}`;
+      message += `${message.length > 0 ? '\n' : ''}`;
+      if ((v instanceof String || typeof (v) === "string")) {
+        message += `"${v}"`;
+        jsonMessage += JSON.stringify(v);
+      }
+      else if (v instanceof Error) {
+        message += `${v.name}`;
+        if (v.code) {
+          message += `(${v.code})`;
+        }
+        message += `: ${v.message}\n${v.stack}\n`;
+
+        // Error's aren't parsable without custom handling
+        const alt = {};
+        Object.getOwnPropertyNames(v).forEach(function (key) { alt[key] = this[key]; }, v);
+        jsonMessage += JSON.stringify(alt);
+      } else {
+        message += jsonStringify(v);
+        jsonMessage += JSON.stringify(v);
+      }
+    });
+
+    loggerFile.log(method, `{logEntry:[${jsonMessage}]}`); //untouched
+    return loggerConsole.log(method, message); //prettified
   } catch (err) {
     console.error(err);
     console.error(...args);
@@ -50,9 +91,22 @@ const safeLog = (method, ...args) => {
 
 //proxied to abstract logger for easy library replacement
 module.exports = {
+  silly: (...args) => safeLog('silly', ...args),
   trace: (...args) => safeLog('debug', ...args),
   debug: (...args) => safeLog('debug', ...args),
   info: (...args) => safeLog('info', ...args),
   warn: (...args) => safeLog('warn', ...args),
   error: (...args) => safeLog('error', ...args)
 };
+
+// module.exports.error(new Error("test"));
+// try {
+//   throw new Error("here");
+// } catch (ex) { module.exports.error(ex); }
+//
+// module.exports.error("message first",new Error("test"), "additional message");
+// module.exports.error(new Error("test"), "mesage last");
+// module.exports.silly("test silly");
+// module.exports.debug("test debug");
+// module.exports.info("test info");
+// module.exports.warn("test warn");
