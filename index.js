@@ -3,7 +3,7 @@ const winston = require('winston');
 const logger = new winston.Logger({
   transports: [
     new winston.transports.File({
-      level: 'info',
+      level: 'debug',
       filename: './logs/system.log',
       handleExceptions: true,
       humanReadableUnhandledException: true,
@@ -16,7 +16,7 @@ const logger = new winston.Logger({
     new winston.transports.Console({
       level: 'info',
       handleExceptions: true,
-      humanReadableUnhandledException: false,
+      humanReadableUnhandledException: true,
       json: false,
       colorize: true,
       timestamp: true
@@ -30,6 +30,7 @@ const safeLog = (method, ...args) => {
     return logger[method](...args);
   } catch (err) {
     console.error(err);
+    console.error(...args);
   }
 
   return null;
@@ -41,11 +42,5 @@ module.exports = {
   debug: (...args) => safeLog('debug', ...args),
   info: (...args) => safeLog('info', ...args),
   warn: (...args) => safeLog('warn', ...args),
-  error: (...args) => {
-    if( args[0] instanceof Object && (args[0]).message )
-      safeLog('error', (args[0]).message + ((args[0]).stack?'\n' + (args[0]).stack:''));
-    if( args[0] instanceof String )
-      safeLog('error', args[0]);
-    else safeLog('error', ...args);
-  }
+  error: (...args) => safeLog('error', ...args)
 };
