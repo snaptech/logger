@@ -7,7 +7,7 @@ const logger = new winston.createLogger({
       filename: './logs/system.log',
       handleExceptions: true,
       humanReadableUnhandledException: true,
-      json: true,
+      format: winston.format.json,
       maxsize: 5242880, //5MB
       maxFiles: 5,
       colorize: false,
@@ -17,6 +17,11 @@ const logger = new winston.createLogger({
       level: 'debug',
       handleExceptions: true,
       humanReadableUnhandledException: true,
+      format: winston.format.combine(
+        timestamp(),
+        prettyPrint(10, true),
+        errors({stack: true})
+      ),
       json: false,
       colorize: true,
       timestamp: true
