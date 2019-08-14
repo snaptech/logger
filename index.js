@@ -90,7 +90,7 @@ const safeLog = (method, ...args) => {
 };
 
 //proxied to abstract logger for easy library replacement
-module.exports = {
+const logger = {
   silly: (...args) => safeLog('silly', ...args),
   trace: (...args) => safeLog('debug', ...args),
   debug: (...args) => safeLog('debug', ...args),
@@ -98,6 +98,13 @@ module.exports = {
   warn: (...args) => safeLog('warn', ...args),
   error: (...args) => safeLog('error', ...args)
 };
+
+module.exports = {
+  logger,
+  ...logger
+};
+
+module.default = logger;
 
 // module.exports.error(new Error("test"));
 // try {
