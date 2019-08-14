@@ -7,7 +7,7 @@ const logger = new winston.createLogger({
       filename: './logs/system.log',
       handleExceptions: true,
       humanReadableUnhandledException: true,
-      format: winston.format.json,
+      format: winston.format.json(),
       maxsize: 5242880, //5MB
       maxFiles: 5,
       colorize: false,
@@ -21,10 +21,16 @@ const logger = new winston.createLogger({
         winston.format.timestamp(),
         winston.format.prettyPrint(10, true),
         winston.format.errors({stack: true})
-      ),
-      json: false,
-      colorize: true,
-      timestamp: true
+      )
+    })
+  ],
+  exceptionHandlers: [
+    new winston.transports.File({
+      filename: './logs/unhandled.log',
+      format: winston.format.json()
+    }),
+    new winston.transports.Console({
+      format: winston.format.json()
     })
   ],
   exitOnError: false
