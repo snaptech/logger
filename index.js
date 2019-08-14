@@ -74,7 +74,7 @@ const safeLog = (method, ...args) => {
         Object.getOwnPropertyNames(v).forEach(function (key) { alt[key] = this[key]; }, v);
         jsonMessage += JSON.stringify(alt);
       } else {
-        message += jsonStringify(v);
+        message += JSON.stringify(v);
         jsonMessage += JSON.stringify(v);
       }
     });
