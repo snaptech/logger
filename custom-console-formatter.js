@@ -1,6 +1,6 @@
 const { format } = require('winston');
 const { MESSAGE } = require('triple-beam');
-
+const jsonStringify = require('json-stringify-safe');
 
 /*
  * function simple (info)
@@ -12,7 +12,7 @@ const { MESSAGE } = require('triple-beam');
  *    ${level}: ${message}                            if rest is empty
  *    ${level}: ${message} ${JSON.stringify(rest)}    otherwise
  */
-module.exports = format((info,opts) => {
+module.exports = format((info /*, opts */) => {
   const rest = {...info };
   delete rest.level;
   delete rest.message;
@@ -22,7 +22,7 @@ module.exports = format((info,opts) => {
   info.stack = info.stack ? `\n${info.stack}` : info.stack;
   const padding = (info.padding && info.padding[info.level]) || '';
 
-  let stringifiedRest = JSON.stringify(rest);
+  let stringifiedRest = jsonStringify(rest);
   if (stringifiedRest === '{}') {
     stringifiedRest = '';
   } else {

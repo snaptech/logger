@@ -1,7 +1,7 @@
 const winston = require('winston');
+const jsonStringify = require('json-stringify-safe');
 const customConsoleFormatter = require('./custom-console-formatter');
 const customJSONFormatter = require('./custom-json-formatter');
-
 
 const loggerConsole = new winston.createLogger({
   level: 'debug',
@@ -66,7 +66,7 @@ const safeLog = (method, ...args) => {
       message += `${message.length > 0 ? '\n' : ''}`;
       if ((v instanceof String || typeof (v) === "string")) {
         message += `"${v}"`;
-        jsonMessage += JSON.stringify(v, null, method === 'json' ? 2 : undefined);
+        jsonMessage += jsonStringify(v, null, method === 'json' ? 2 : undefined);
 
       } else if (v instanceof Error) {
         message += `${v.name}`;
@@ -77,11 +77,11 @@ const safeLog = (method, ...args) => {
 
         // Error's aren't parsable without custom handling
         const alt = {};
-        Object.getOwnPropertyNames(v).forEach(function (key) { alt[key] = this[key]; }, v);
-        jsonMessage += JSON.stringify(alt, null, method === 'json' ? 2 : undefined);
+        Object.getOwnPropertyNames(v).forEach((key) => { alt[key] = this[key]; }, v);
+        jsonMessage += jsonStringify(alt, null, method === 'json' ? 2 : undefined);
       } else {
-        message += JSON.stringify(v, null, method === 'json' ? 2 : null);
-        jsonMessage += JSON.stringify(v, null, method === 'json' ? 2 : null);
+        message += jsonStringify(v, null, method === 'json' ? 2 : null);
+        jsonMessage += jsonStringify(v, null, method === 'json' ? 2 : null);
       }
     });
 

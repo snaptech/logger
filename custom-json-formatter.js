@@ -12,7 +12,7 @@ const { MESSAGE } = require('triple-beam');
  *    ${level}: ${message}                            if rest is empty
  *    ${level}: ${message} ${JSON.stringify(rest)}    otherwise
  */
-module.exports = format((info,opts) => {
+module.exports = format((info /*, opts*/) => {
   info[MESSAGE] = `{"timestamp":"${info.timestamp}", "level": "${info.level}", "message": ${info.message}}`;
   return info;
 });
