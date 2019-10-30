@@ -58,8 +58,8 @@ const safeLog = (method, ...args) => {
     let exit = false;
 
     (args || []).forEach((v) => {
-      if (v.toString().indexOf('GET: /healthy') >= 0
-          || v.toString().indexOf('GET: /ready') >= 0) {
+      if (v && (v.toString().indexOf('GET: /healthy') >= 0
+          || v.toString().indexOf('GET: /ready') >= 0)) {
         exit = true;
       }
       jsonMessage += `${jsonMessage.length > 0 ? ',' : ''}`;
