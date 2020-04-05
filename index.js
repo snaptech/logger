@@ -107,10 +107,9 @@ const safeStringify = (...args) => {
         jsonMessage += jsonStringify(v, null, 2);
 
       } else if (v instanceof Error) {
-        // Error's aren't parsable without custom handling
         const alt = {};
         Object.getOwnPropertyNames(v).forEach((key) => {
-          alt[key] = this[key];
+          alt[key] = v[key];
         }, v);
         jsonMessage += jsonStringify(alt, null, 2);
       } else {
