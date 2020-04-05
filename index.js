@@ -100,13 +100,11 @@ const safeLog = (method, ...args) => {
 const safeStringify = (...args) => {
   try {
     let jsonMessage = '';
-    let exit = false;
-
     (args || []).forEach((v) => {
 
       jsonMessage += `${jsonMessage.length > 0 ? ',' : ''}`;
       if ((v instanceof String || typeof (v) === "string")) {
-        jsonMessage += jsonStringify(v, null, method === 'json' ? 2 : undefined);
+        jsonMessage += jsonStringify(v, null, 2);
 
       } else if (v instanceof Error) {
         // Error's aren't parsable without custom handling
@@ -114,9 +112,9 @@ const safeStringify = (...args) => {
         Object.getOwnPropertyNames(v).forEach((key) => {
           alt[key] = this[key];
         }, v);
-        jsonMessage += jsonStringify(alt, null, method === 'json' ? 2 : undefined);
+        jsonMessage += jsonStringify(alt, null, 2);
       } else {
-        jsonMessage += jsonStringify(v, null, method === 'json' ? 2 : null);
+        jsonMessage += jsonStringify(v, null, 2);
       }
     });
 
