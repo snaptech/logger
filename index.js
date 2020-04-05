@@ -97,6 +97,38 @@ const safeLog = (method, ...args) => {
   return null;
 };
 
+const safeStringify = (...args) => {
+  try {
+    let jsonMessage = '';
+    let exit = false;
+
+    (args || []).forEach((v) => {
+
+      jsonMessage += `${jsonMessage.length > 0 ? ',' : ''}`;
+      if ((v instanceof String || typeof (v) === "string")) {
+        jsonMessage += jsonStringify(v, null, method === 'json' ? 2 : undefined);
+
+      } else if (v instanceof Error) {
+        // Error's aren't parsable without custom handling
+        const alt = {};
+        Object.getOwnPropertyNames(v).forEach((key) => {
+          alt[key] = this[key];
+        }, v);
+        jsonMessage += jsonStringify(alt, null, method === 'json' ? 2 : undefined);
+      } else {
+        jsonMessage += jsonStringify(v, null, method === 'json' ? 2 : null);
+      }
+    });
+
+    return jsonMessage;
+  } catch (err) {
+    console.error(err);
+    console.error(...args);
+  }
+
+  return null;
+};
+
 //proxied to abstract logger for easy library replacement
 const logger = {
   silly: (...args) => safeLog('silly', ...args),
@@ -106,7 +138,8 @@ const logger = {
   info: (...args) => safeLog('info', ...args),
   warn: (...args) => safeLog('warn', ...args),
   error: (...args) => safeLog('error', ...args),
-  json: (...args) => safeLog('json', ...args)
+  json: (...args) => safeLog('json', ...args),
+  stringify: (...args) => safeStringify(...args)
 };
 
 module.exports = {
