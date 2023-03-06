@@ -50,7 +50,6 @@ const loggerFile = new winston.createLogger({
   exitOnError: false
 });
 
-
 const safeLog = (method, ...args) => {
   try {
     let message = '';

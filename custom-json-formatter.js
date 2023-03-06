@@ -1,7 +1,6 @@
 const { format } = require('winston');
 const { MESSAGE } = require('triple-beam');
 
-
 /*
  * function simple (info)
  * Returns a new instance of the simple format TransformStream
