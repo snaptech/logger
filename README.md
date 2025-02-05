@@ -42,3 +42,17 @@ logger.debug(...);
 logger.error(...);
 
 ```
+
+Release/Maintenance
+---
+Lint if desired but remove the linting dependencies to reduce weight on downstream
+applications. Eslint was used for the build-out but the implementation here is outdated.
+
+
+Chores / Todo
+---
+- Update Eslint configuration to Tslint
+- Update project to Typescript
+- Remove remaining dependencies to keep extra-lightweight
+- Add DB/cloud-services logging capability/configuration
+
