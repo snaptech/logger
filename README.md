@@ -49,10 +49,18 @@ Lint if desired but remove the linting dependencies to reduce weight on downstre
 applications. Eslint was used for the build-out but the implementation here is outdated.
 
 
+
+1. `npm test` -- once implemented
+2. `npm pack`
+3. Copy .nvmrc for the Snaptech private registry to local folder
+3. `npm publish`
+
+
 Chores / Todo
 ---
 - Update Eslint configuration to Tslint
 - Update project to Typescript
 - Remove remaining dependencies to keep extra-lightweight
 - Add DB/cloud-services logging capability/configuration
+- Write test scripts
 
