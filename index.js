@@ -69,8 +69,8 @@ const safeLog = (method, ...args) => {
         jsonMessage += jsonStringify(v, null, method === 'json' ? 2 : undefined);
 
       }
-      else if((v instanceof ArrayBuffer && v.byteLength > 10) ||
-        (v instanceof Buffer)) { message += "[...]" }
+      // else if((v instanceof ArrayBuffer && v.byteLength > 10) ||
+      //   (v instanceof Buffer)) { message += "[...]" }
       else if (v instanceof Error) {
         message += `${v.name}`;
         if (v.code) {
