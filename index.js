@@ -143,6 +143,17 @@ export const logger = {
   stringify: (...args) => safeStringify(...args)
 };
 
+export const silly = (...args) => safeLog('silly', ...args);
+export const trace = (...args) => safeLog('debug', ...args);
+export const debug = (...args) => safeLog('debug', ...args);
+export const log = (...args) => safeLog('info', ...args);
+export const info = (...args) => safeLog('info', ...args);
+export const warn = (...args) => safeLog('warn', ...args);
+export const error = (...args) => safeLog('error', ...args);
+export const json = (...args) => safeLog('json', ...args);
+export const stringify = (...args) => safeStringify(...args);
+
+
 export default logger;
 
 // module.exports.error(new Error("test"));
