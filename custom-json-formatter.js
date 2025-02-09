@@ -1,5 +1,5 @@
-const { format } = require('winston');
-const { MESSAGE } = require('triple-beam');
+import { format } from 'winston';
+import { MESSAGE } from 'triple-beam';
 
 /*
  * function simple (info)

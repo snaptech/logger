@@ -1,7 +1,8 @@
-const winston = require('winston');
-const jsonStringify = require('json-stringify-safe');
-const customConsoleFormatter = require('./custom-console-formatter');
-const customJSONFormatter = require('./custom-json-formatter');
+import winston from 'winston';
+import jsonStringify from 'json-stringify-safe';
+import customConsoleFormatter from './custom-console-formatter';
+import customJSONFormatter from './custom-json-formatter';
+import Buffer from 'node:buffer';
 
 const loggerConsole = new winston.createLogger({
   level: 'debug',
@@ -67,7 +68,10 @@ const safeLog = (method, ...args) => {
         message += `"${v}"`;
         jsonMessage += jsonStringify(v, null, method === 'json' ? 2 : undefined);
 
-      } else if (v instanceof Error) {
+      }
+      else if((v instanceof ArrayBuffer && v.byteLength > 10) ||
+        (v instanceof Buffer)) { message += "[...]" }
+      else if (v instanceof Error) {
         message += `${v.name}`;
         if (v.code) {
           message += `(${v.code})`;

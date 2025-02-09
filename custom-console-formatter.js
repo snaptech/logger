@@ -1,6 +1,6 @@
-const { format } = require('winston');
-const { MESSAGE } = require('triple-beam');
-const jsonStringify = require('json-stringify-safe');
+import { format } from 'winston';
+import { MESSAGE } from 'triple-beam';
+import jsonStringify from 'json-stringify-safe';
 
 /*
  * function simple (info)
