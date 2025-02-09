@@ -12,7 +12,7 @@ import jsonStringify from 'json-stringify-safe';
  *    ${level}: ${message}                            if rest is empty
  *    ${level}: ${message} ${JSON.stringify(rest)}    otherwise
  */
-module.exports = format((info /*, opts */) => {
+const customConsoleFormatter = format((info /*, opts */) => {
   const rest = {...info };
   delete rest.level;
   delete rest.message;
@@ -32,3 +32,8 @@ module.exports = format((info /*, opts */) => {
   info[MESSAGE] = `[${info.timestamp}] ${info.level}: ${padding}${info.message} ${info.stack || ''}${stringifiedRest || ''}`;
   return info;
 });
+
+module.exports = {
+  customConsoleFormatter
+}
+module.default = customConsoleFormatter;

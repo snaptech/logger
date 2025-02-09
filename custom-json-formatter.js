@@ -11,7 +11,12 @@ import { MESSAGE } from 'triple-beam';
  *    ${level}: ${message}                            if rest is empty
  *    ${level}: ${message} ${JSON.stringify(rest)}    otherwise
  */
-module.exports = format((info /*, opts*/) => {
+const customJSONFormatter = format((info /*, opts*/) => {
   info[MESSAGE] = `{"timestamp":"${info.timestamp}", "level": "${info.level}", "message": ${info.message}}`;
   return info;
 });
+
+module.exports = {
+  customJSONFormatter
+}
+module.default = customJSONFormatter;
