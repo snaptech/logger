@@ -16,7 +16,7 @@ const customJSONFormatter = format((info /*, opts*/) => {
   return info;
 });
 
-module.exports = {
+export {
   customJSONFormatter
 }
-module.default = customJSONFormatter;
+export default customJSONFormatter;

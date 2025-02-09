@@ -33,7 +33,7 @@ const customConsoleFormatter = format((info /*, opts */) => {
   return info;
 });
 
-module.exports = {
+export {
   customConsoleFormatter
 }
-module.default = customConsoleFormatter;
+export default customConsoleFormatter;

@@ -143,12 +143,11 @@ const logger = {
   stringify: (...args) => safeStringify(...args)
 };
 
-module.exports = {
-  logger,
-  ...logger
+export {
+  logger
 };
 
-module.default = logger;
+export default logger;
 
 // module.exports.error(new Error("test"));
 // try {
