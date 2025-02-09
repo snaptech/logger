@@ -1,7 +1,7 @@
 import winston from 'winston';
 import jsonStringify from 'json-stringify-safe';
-import customConsoleFormatter from './custom-console-formatter';
-import customJSONFormatter from './custom-json-formatter';
+import * as customConsoleFormatter from './custom-console-formatter';
+import * as customJSONFormatter from './custom-json-formatter';
 import Buffer from 'node:buffer';
 
 const loggerConsole = new winston.createLogger({
