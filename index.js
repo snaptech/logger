@@ -81,7 +81,9 @@ const safeLog = (method, ...args) => {
 
         // Error's aren't parsable without custom handling
         const alt = {};
-        Object.getOwnPropertyNames(v).forEach((key) => { alt[key] = this[key]; }, v);
+        for( const key in Object.getOwnPropertyNames(v)) {
+          alt[key] = v[key];
+        }
         jsonMessage += jsonStringify(alt, null, method === 'json' ? 2 : undefined);
       } else {
         message += jsonStringify(v, null, method === 'json' ? 2 : null);
