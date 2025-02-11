@@ -133,7 +133,7 @@ const safeStringify = (...args) => {
 };
 
 //proxied to abstract logger for easy library replacement
-export const logger = {
+const logger = {
   silly: (...args) => safeLog('silly', ...args),
   trace: (...args) => safeLog('debug', ...args),
   debug: (...args) => safeLog('debug', ...args),
