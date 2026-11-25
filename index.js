@@ -52,6 +52,26 @@ const loggerFile = new winston.createLogger({
   exitOnError: false
 });
 
+// Error properties are non-enumerable, so JSON serialization writes every Error (and each nested `cause`) as {}.
+// The WeakSet stops a `cause` chain that loops back on itself from recursing forever.
+const errorReplacer = () => {
+  const seen = new WeakSet();
+  return (key, value) => {
+    if (!(value instanceof Error)) {
+      return value;
+    }
+    if (seen.has(value)) {
+      return '[Repeated Error]';
+    }
+    seen.add(value);
+    const plain = {name: value.name};
+    for (const prop of Object.getOwnPropertyNames(value)) {
+      plain[prop] = value[prop];
+    }
+    return plain;
+  };
+};
+
 const safeLog = (method, ...args) => {
   try {
     let message = '';
@@ -78,16 +98,10 @@ const safeLog = (method, ...args) => {
           message += `(${v.code})`;
         }
         message += `: ${v.message}\n${v.stack}\n`;
-
-        // Error's aren't parsable without custom handling
-        const alt = {};
-        for( const key in Object.getOwnPropertyNames(v)) {
-          alt[key] = v[key];
-        }
-        jsonMessage += jsonStringify(alt, null, method === 'json' ? 2 : undefined);
+        jsonMessage += jsonStringify(v, errorReplacer(), method === 'json' ? 2 : undefined);
       } else {
-        message += jsonStringify(v, null, method === 'json' ? 2 : null);
-        jsonMessage += jsonStringify(v, null, method === 'json' ? 2 : null);
+        message += jsonStringify(v, errorReplacer(), method === 'json' ? 2 : null);
+        jsonMessage += jsonStringify(v, errorReplacer(), method === 'json' ? 2 : null);
       }
     });
 
@@ -112,14 +126,8 @@ const safeStringify = (...args) => {
       if ((v instanceof String || typeof (v) === "string")) {
         jsonMessage += jsonStringify(v, null, 2);
 
-      } else if (v instanceof Error) {
-        const alt = {};
-        for( const key in Object.getOwnPropertyNames(v)) {
-          alt[key] = v[key];
-        }
-        jsonMessage += jsonStringify(alt, null, 2);
       } else {
-        jsonMessage += jsonStringify(v, null, 2);
+        jsonMessage += jsonStringify(v, errorReplacer(), 2);
       }
     });
 
