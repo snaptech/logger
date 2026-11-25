@@ -21,16 +21,15 @@ https://snaptech.pkgs.visualstudio.com/_packaging/snaptech/npm/registry/
 Usage
 ---
 
-Typescript:
+Typescript / ES modules (both forms expose the same methods):
 ```ts
+import logger from '@snaptech/logger';
 import * as logger from '@snaptech/logger';
-import { default as logger } from '@snaptech/logger'
-
 ```
 
-Javascript:
+CommonJS (Node 20.19+ / 22.12+, which can `require()` ES modules):
 ```js
-const logger = require('logger');
+const logger = require('@snaptech/logger');
 ```
 
 Common:

@@ -154,9 +154,24 @@ const logger = {
 };
 
 
-export default {
+const defaultLogger = {
   ...logger
 };
+
+export default defaultLogger;
+
+// Named exports let `import * as logger from '@snaptech/logger'` call logger.error(...) and the rest. They forward to
+// the default export so a stub on it (e.g. sinon.stub(logger, 'error') on the default import) also covers namespace
+// imports, whose properties can't be stubbed.
+export const silly = (...args) => defaultLogger.silly(...args);
+export const trace = (...args) => defaultLogger.trace(...args);
+export const debug = (...args) => defaultLogger.debug(...args);
+export const log = (...args) => defaultLogger.log(...args);
+export const info = (...args) => defaultLogger.info(...args);
+export const warn = (...args) => defaultLogger.warn(...args);
+export const error = (...args) => defaultLogger.error(...args);
+export const json = (...args) => defaultLogger.json(...args);
+export const stringify = (...args) => defaultLogger.stringify(...args);
 
 
 
