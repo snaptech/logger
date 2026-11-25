@@ -1,7 +1,7 @@
 import winston from 'winston';
 import jsonStringify from 'json-stringify-safe';
-import {customConsoleFormatter} from './custom-console-formatter';
-import {customJSONFormatter} from './custom-json-formatter';
+import {customConsoleFormatter} from './custom-console-formatter.js';
+import {customJSONFormatter} from './custom-json-formatter.js';
 import Buffer from 'node:buffer';
 
 
